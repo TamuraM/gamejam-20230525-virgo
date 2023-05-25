@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameState _state = GameState.Idle;
     [SerializeField] GameObject _startUI = default;
     [SerializeField] GameObject _gamevoerUI = default;
+    [SerializeField] GameObject _clearUI = default;
 
     /// <summary>ゲームステートのプロパティ</summary>
     public GameState State { get { return _state; } set { _state = value; } }
@@ -77,6 +78,9 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _state = GameState.Idle;
+        _startUI.SetActive(true);
+        _gamevoerUI.SetActive(false);
+        _clearUI.SetActive(false);
     }
 
     private void Update()
@@ -86,6 +90,9 @@ public class GameManager : MonoBehaviour
         {
 
             case GameState.GameOver:
+                return;
+
+            case GameState.Goal:
                 return;
 
             case GameState.Game:
@@ -130,6 +137,12 @@ public class GameManager : MonoBehaviour
             _gamevoerUI.SetActive(true);
             _state = GameState.GameOver;
         }
+    }
+
+    public void PlayerGoal()
+    {
+        _state = GameState.Goal;
+        _clearUI.SetActive(true);
     }
 
 }
