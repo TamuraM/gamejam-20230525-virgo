@@ -134,6 +134,7 @@ public class GameManager : MonoBehaviour
         _life -= damage;
         if (_life <= 0)
         {
+            _life = 0;
             _gamevoerUI.SetActive(true);
             _state = GameState.GameOver;
         }
