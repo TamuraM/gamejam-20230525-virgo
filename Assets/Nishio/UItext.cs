@@ -17,7 +17,7 @@ public class UItext : MonoBehaviour
     void Update()
     {
         _coinText.text = GameManager.instance.Coin.ToString();
-        _timerText.text = GameManager.instance.Timar.ToString("f2");
+        _timerText.text = GameManager.instance.Timar.ToString("000");
         _lifeText.text = GameManager.instance.Life.ToString();
     }
 }
