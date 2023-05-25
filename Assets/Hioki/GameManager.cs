@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] int _coin = 0;
     /// <summary>ライフ</summary>
     [SerializeField] int _life = 5;
+    /// <summary>タイムリミット</summary>
+    [SerializeField] float _timeLimit = 60f;
     /// <summary>ゲーム中のタイマー</summary>
     [SerializeField] float _timer = 0;
     /// <summary>ゲームステート</summary>
@@ -77,7 +79,9 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (_state == GameState.Game)
-            _timer += Time.deltaTime;
+            _timer -= Time.deltaTime;
+        if (_timer <= _timeLimit)
+            _state = GameState.GameOver;
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
