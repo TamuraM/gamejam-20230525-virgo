@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 /// <summary>プレイヤーの動き関連の処理</summary>
@@ -21,6 +23,14 @@ public class PlayerController : MonoBehaviour
     [Header("プレイヤーの状態のパラメーター")]
     [SerializeField, Header("飛んでいるかどうか")] private bool _isFlying = false;
     [SerializeField, Header("地面についているかどうか")] private bool _isGround = true;
+    private bool _isTired = false;
+    private float _timer = 0;
+    [SerializeField, Header("浮遊を解除してから何秒後にまた浮遊できるか")] private float _flyInterval = 5;
+
+    [SerializeField] private AudioSource _audioSource = default;
+    [SerializeField, Header("飛んだ時の音")] private AudioClip _jump = default;
+    [SerializeField, Header("敵を踏んだ時の音")] private AudioClip _fumu = default;
+    [SerializeField, Header("なにかに当たった時の音")] private AudioClip _do = default;
 
     private Rigidbody2D _rb = default;
 
@@ -32,22 +42,44 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (GameManager.instance.State != GameState.Game) return;
-        
+
         float velocityY = _rb.velocity.y;
         float velocityX = Input.GetAxisRaw("Horizontal") * _moveSpeed;
+
+        if(_isTired)
+        {
+            _timer += Time.deltaTime;
+            
+            if(_timer > _flyInterval)
+            {
+                _isTired = false;
+                _timer = 0;
+            }
+
+        }
 
         //スペースキーで浮遊と浮遊解除
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _isFlying = !_isFlying;
+
+            if (_isFlying)
+            {
+                _isFlying = false;
+                _isTired = true;
+            }
+            else if(!_isTired)
+            {
+                _isFlying = true;
+            }
+
         }
 
-        if(_stamina <= 0) //スタミナがなかったら飛べない
+        if (_stamina <= 0) //スタミナがなかったら飛べない
         {
             _isFlying = false;
         }
 
-        if(_isFlying) //飛んでたらスタミナ減らして飛んでく
+        if (_isFlying) //飛んでたらスタミナ減らして飛んでく
         {
             _stamina -= Time.deltaTime;
             velocityY = _flyPower;
@@ -56,9 +88,12 @@ public class PlayerController : MonoBehaviour
         {
             _stamina += Time.deltaTime;
 
-            if (_stamina > _maxStamina) _stamina = _maxStamina;
+            if (_stamina > _maxStamina)
+            {
+                _stamina = _maxStamina;
+            }
 
-            if(_isGround)
+            if (_isGround)
             {
                 velocityY = 0;
             }
@@ -76,22 +111,25 @@ public class PlayerController : MonoBehaviour
     /// <param name="collision">当たったオブジェクト</param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-        if(collision.gameObject.TryGetComponent<Enemy>(out Enemy enemy)) //敵だったら倒して浮遊
+
+        if (collision.gameObject.TryGetComponent<Enemy>(out Enemy enemy)) //敵だったら倒して浮遊
         {
             enemy.Death();
+            _audioSource.PlayOneShot(_fumu);
             _stamina += _recoveryPoint;
             _isFlying = true;
         }
-        else if(collision.gameObject.TryGetComponent<Hole>(out Hole hole)) //地面だったら死ぬ
+        else if (collision.gameObject.TryGetComponent<Hole>(out Hole hole)) //地面だったら死ぬ
         {
             hole.OnCollide();
         }
         else //地面だったらtrue
         {
             _isGround = true;
+            _isTired = false;
+            _timer = 0;
         }
-       
+
     }
 
     /// <summary>足元の当たり判定</summary>
@@ -110,6 +148,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log($"{colliderable}に当たった");
             colliderable.OnCollide();
+            _audioSource.PlayOneShot(_do);
         }
 
     }
