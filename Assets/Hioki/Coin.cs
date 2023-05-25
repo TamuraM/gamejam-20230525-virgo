@@ -11,9 +11,4 @@ public class Coin : MonoBehaviour, IColliderable
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        GameManager.instance.AddCoine();
-        Destroy(gameObject);
-    }
 }

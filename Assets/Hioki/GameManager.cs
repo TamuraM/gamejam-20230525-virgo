@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] float _timer = 0;
     /// <summary>ゲームステート</summary>
     [SerializeField] GameState _state = GameState.Idle;
+    [SerializeField] GameObject _startUI = default;
+    [SerializeField] GameObject _gamevoerUI = default;
 
     /// <summary>ゲームステートのプロパティ</summary>
     public GameState State { get { return _state; } set { _state = value; } }
@@ -78,16 +81,40 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (_state == GameState.Game)
-            _timer -= Time.deltaTime;
-        if (_timer <= _timeLimit)
-            _state = GameState.GameOver;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        switch (_state)
         {
-            _state = GameState.Game;
-            _timer = 0;
+
+            case GameState.GameOver:
+                return;
+
+            case GameState.Game:
+                _timer -= Time.deltaTime;
+
+                if (_timer <= 0)
+                {
+                    _gamevoerUI.SetActive(true);
+                    _state = GameState.GameOver;
+                }
+
+                break;
+
+            case GameState.Idle:
+
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    _state = GameState.Game;
+                    _timer = _timeLimit;
+                    _startUI.SetActive(false);
+                }
+
+                break;
+
+            default:
+                break;
+
         }
+
     }
 
     public void AddCoine()
@@ -100,9 +127,11 @@ public class GameManager : MonoBehaviour
         _life -= damage;
         if (_life <= 0)
         {
+            _gamevoerUI.SetActive(true);
             _state = GameState.GameOver;
         }
     }
+
 }
 
 public enum GameState

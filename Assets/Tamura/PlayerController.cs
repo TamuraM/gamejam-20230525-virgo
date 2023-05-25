@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         
         if(collision.gameObject.TryGetComponent<Enemy>(out Enemy enemy)) //“G‚¾‚Á‚½‚ç“|‚µ‚Ä•‚—V
         {
-            enemy.OnCollide();
+            enemy.Death();
             _stamina += _recoveryPoint;
             _isFlying = true;
         }
