@@ -79,9 +79,13 @@ public class PlayerController : MonoBehaviour
         
         if(collision.gameObject.TryGetComponent<Enemy>(out Enemy enemy)) //“G‚¾‚Á‚½‚ç“|‚µ‚Ä•‚—V
         {
-            
+            enemy.OnCollide();
             _stamina += _recoveryPoint;
             _isFlying = true;
+        }
+        else if(collision.gameObject.TryGetComponent<Hole>(out Hole hole)) //’n–Ê‚¾‚Á‚½‚çŽ€‚Ê
+        {
+            hole.OnCollide();
         }
         else //’n–Ê‚¾‚Á‚½‚çtrue
         {
@@ -102,7 +106,7 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (collision.gameObject.TryGetComponent<IColliderable>(out IColliderable colliderable)) //“G‚¾‚Á‚½‚ç“|‚µ‚Ä•‚—V
+        if (collision.gameObject.TryGetComponent<IColliderable>(out IColliderable colliderable))
         {
             Debug.Log($"{colliderable}‚É“–‚½‚Á‚½");
             colliderable.OnCollide();
