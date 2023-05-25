@@ -15,7 +15,7 @@ public class UItext : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _coinText.text = GameManager.instance.Coine.ToString();
+        _coinText.text = GameManager.instance.Coin.ToString();
         _timerText.text = GameManager.instance.Timar.ToString("f2");
     }
 }
