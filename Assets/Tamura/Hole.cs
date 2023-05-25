@@ -7,6 +7,7 @@ public class Hole : MonoBehaviour, IColliderable
     public void OnCollide()
     {
         //‘¦€ƒ_ƒ[ƒW‚ğ—^‚¦‚é
+        GameManager.instance.Damage(999);
     }
 
 }
