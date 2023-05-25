@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
             else if(!_isTired)
             {
                 _isFlying = true;
+                _audioSource.PlayOneShot(_jump);
             }
 
         }
