@@ -6,6 +6,6 @@ public class Goal : MonoBehaviour, IColliderable
 {
     public void OnCollide()
     {
-        
+        GameManager.instance.PlayerGoal();
     }
 }
