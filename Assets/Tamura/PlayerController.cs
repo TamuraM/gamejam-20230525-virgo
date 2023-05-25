@@ -7,6 +7,8 @@ using UnityEngine;
 /// <summary>プレイヤーの動き関連の処理</summary>
 public class PlayerController : MonoBehaviour
 {
+    private SpriteRenderer _sr = default;
+
     [Header("プレイヤーの動きのパラメーター")]
     [SerializeField, Header("プレイヤーの左右移動のスピード")] private float _moveSpeed = 3f;
 
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _sr = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -105,6 +108,9 @@ public class PlayerController : MonoBehaviour
         }
 
         _rb.velocity = new Vector2(velocityX, velocityY);
+
+        if (velocityX < 0) _sr.flipX = true;
+        else _sr.flipX = false;
     }
 
     /// <summary>足元の当たり判定</summary>

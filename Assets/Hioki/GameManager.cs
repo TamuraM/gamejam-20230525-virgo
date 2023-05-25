@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    [SerializeField] private int _maxCoin = 5;
     /// <summary>コイン（スコア）</summary>
     [SerializeField] int _coin = 0;
     /// <summary>ライフ</summary>
@@ -142,8 +143,13 @@ public class GameManager : MonoBehaviour
 
     public void PlayerGoal()
     {
-        _state = GameState.Goal;
-        _clearUI.SetActive(true);
+
+        if(_coin == _maxCoin)
+        {
+            _state = GameState.Goal;
+            _clearUI.SetActive(true);
+        }
+        
     }
 
 }
