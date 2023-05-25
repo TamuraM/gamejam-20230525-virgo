@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 /// <summary>プレイヤーの動き関連の処理</summary>

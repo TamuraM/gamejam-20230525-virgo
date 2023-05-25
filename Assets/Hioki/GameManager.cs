@@ -59,7 +59,11 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
+        _state = GameState.Idle;
+        _startUI.SetActive(true);
+        _gamevoerUI.SetActive(false);
+        _clearUI.SetActive(false);
     }
 
     static void SetupInstance()
@@ -71,18 +75,18 @@ public class GameManager : MonoBehaviour
             GameObject go = new GameObject();
             instance = go.AddComponent<GameManager>();
             go.name = instance.GetType().Name;
-            DontDestroyOnLoad(go);
+            //DontDestroyOnLoad(go);
         }
     }
     #endregion
 
-    private void Start()
-    {
-        _state = GameState.Idle;
-        _startUI.SetActive(true);
-        _gamevoerUI.SetActive(false);
-        _clearUI.SetActive(false);
-    }
+    //private void Start()
+    //{
+    //    _state = GameState.Idle;
+    //    _startUI.SetActive(true);
+    //    _gamevoerUI.SetActive(false);
+    //    _clearUI.SetActive(false);
+    //}
 
     private void Update()
     {
