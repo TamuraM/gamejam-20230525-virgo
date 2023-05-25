@@ -263,7 +263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef9634775e8c29f408a2d28912e69c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coine: 0
+  _coin: 0
+  _life: 5
   _timer: 0
   _state: 0
 --- !u!4 &490185326
