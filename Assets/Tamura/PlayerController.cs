@@ -9,11 +9,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Header("プレイヤーの左右移動のスピード")] private float _moveSpeed = 3f;
 
     [Header("プレイヤーの浮遊のパラメーター")]
-    [SerializeField, Header("今のスタミナ")] private float _stamina = 100f;
+    [SerializeField, Header("現在のスタミナ値")] private float _stamina = 100f;
+    /// <summary>現在のスタミナ値</summary>
     public float Stamina => _stamina;
     [SerializeField, Header("スタミナの最大値")] private float _maxStamina = 100f;
+    /// <summary>スタミナの最大値</summary>
     public float MaxStamina => _maxStamina;
     [SerializeField, Header("浮遊・下降のスピード")] private float _flyPower = 4;
+    [SerializeField, Header("敵を踏んだときに回復するスタミナの量")] private float _recoveryPoint = 30f;
 
     [Header("プレイヤーの状態のパラメーター")]
     [SerializeField, Header("飛んでいるかどうか")] private bool _isFlying = false;
@@ -74,10 +77,10 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
-        if(TryGetComponent<IColliderable>(out IColliderable colliderable)) //敵だったら倒して浮遊
+        if(collision.gameObject.TryGetComponent<Enemy>(out Enemy enemy)) //敵だったら倒して浮遊
         {
-            colliderable.OnCollide();
-            _stamina += 40f;
+            
+            _stamina += _recoveryPoint;
             _isFlying = true;
         }
         else //地面だったらtrue
